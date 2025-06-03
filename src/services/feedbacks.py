@@ -10,10 +10,10 @@ class FeedbacksService:
     async def get_feedbacks(self, limit: int, offset: int) -> List[FeedbackIdentified]:
         return await self.feedback_repo.get(limit=limit, offset=offset)
 
-    async def add_feedback(self, feedback: Feedback) -> int:
+    async def add_feedback(self, feedback: Feedback) -> FeedbackIdentified:
         data = feedback.model_dump()
         result = await self.feedback_repo.add(data)
-        return result.get('id')
+        return FeedbackIdentified.model_validate(result)
 
     async def delete_feedback(self, feedback_id: int):
         return await self.feedback_repo.delete(feedback_id)

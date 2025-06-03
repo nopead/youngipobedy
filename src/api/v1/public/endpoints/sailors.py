@@ -21,7 +21,7 @@ router = APIRouter(
 @router.get("/", response_model=List[SailorShortDataIdentified])
 async def get_sailors(
         request: Request,
-        sailors_service: sailor_service_dependency,
+        sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         limit: int = 30,
         offset: int = 0,
 ):
@@ -33,8 +33,8 @@ async def get_sailors(
 @router.get("/biography/{sailor_id}", response_model=SailorFullData)
 async def get_sailor_by_id(
         request: Request,
+        sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         sailor_id: UUID,
-        sailor_service: sailor_service_dependency,
 ):
-    return await sailor_service.get_sailor(sailor_id)
+    return await sailors_service.get_sailor(sailor_id)
 

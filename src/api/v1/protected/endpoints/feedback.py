@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from src.api.v1.dependencies import admin_dependency, feedback_service_dependency
+from src.services.feedbacks import FeedbacksService
+from typing import Annotated
 from src.api.v1.schemas.feedback import FeedbackIdentified
-from typing import List
+
 
 router = APIRouter(
     prefix="/feedbacks",
@@ -9,20 +11,20 @@ router = APIRouter(
 )
 
 
-@router.get("/show", response_model=List[FeedbackIdentified])
+@router.get("/show", response_model=list[FeedbackIdentified])
 async def show_feedbacks(
-        feedbacks_service: feedback_service_dependency,
         auth: admin_dependency,
+        feedbacks_service: Annotated[FeedbacksService, Depends(feedback_service_dependency)],
         offset: int = 0,
         limit: int = 20
 ):
-    return await feedbacks_service.get(offset, limit)
+    return await feedbacks_service.get_feedbacks(limit, offset)
 
 
-@router.delete("/delete/{feedback_id}")
+@router.delete("/delete/{feedback_id}", response_model=None)
 async def delete_feedback(
         feedback_id: int,
-        feedbacks_service: feedback_service_dependency,
+        feedbacks_service: Annotated[FeedbacksService, Depends(feedback_service_dependency)],
         auth: admin_dependency
 ):
-    ...
+    return await feedbacks_service.delete_feedback(feedback_id)

@@ -23,7 +23,8 @@ class SQLAlchemyRepository(AbstractRepository):
     async def get(self, limit: int, offset: int):
         async with async_session_maker() as session:
             try:
-                select(self.model).limit(limit).offset(offset)
+                result = await session.execute(select(self.model).limit(limit).offset(offset))
+                return result.scalars().all()
             except Exception as e:
                 await session.rollback()
                 raise HTTPException(status_code=500, detail=f"Ошибка при получении данных: {str(e)}")

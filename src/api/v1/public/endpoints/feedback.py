@@ -1,15 +1,15 @@
-from fastapi import APIRouter, HTTPException, Request
-
-from starlette import status
-
-from src.repository.sqlalchemy.feedbacks import create_feedback
-
-from src.api.v1.schemas.feedback import FeedbackCreate
-
+from fastapi import APIRouter, Request, Depends
+from src.api.v1.schemas.feedback import FeedbackIdentified
+from src.services.feedbacks import FeedbacksService
+from src.api.v1.dependencies import feedback_service_dependency
+from src.api.v1.schemas.feedback import Feedback
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from typing import Annotated
+
 
 limiter = Limiter(key_func=get_remote_address)
+
 
 router = APIRouter(
     prefix="/feedbacks",
@@ -18,17 +18,10 @@ router = APIRouter(
 
 
 @limiter.limit("5/minute")
-@router.post("/create", status_code=status.HTTP_201_CREATED)
+@router.post("/create", response_model=FeedbackIdentified)
 async def create_feedback_route(
         request: Request,
-        data: FeedbackCreate,
+        data: Feedback,
+        feedbacks_service: Annotated[FeedbacksService, Depends(feedback_service_dependency)],
 ):
-    try:
-        ...
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error"
-        )
+    return await feedbacks_service.add_feedback(data)

@@ -20,7 +20,6 @@ class SailorService:
 
     async def update_sailor(self, new_data: SailorFullDataIdentified) -> SailorFullDataIdentified:
         data = new_data.model_dump()
-        print("В сервисе")
         return await self.sailors_repo.update(data)
 
     async def delete_sailor(self, sailor_id: UUID):

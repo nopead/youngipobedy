@@ -1,5 +1,6 @@
 from src.api.v1.schemas.base import MyBaseModel
 from pydantic import EmailStr, Field
+import datetime
 
 
 class Feedback(MyBaseModel):
@@ -11,3 +12,4 @@ class Feedback(MyBaseModel):
 
 class FeedbackIdentified(Feedback):
     id: int
+    created_at: datetime.datetime
