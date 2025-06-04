@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Depends, BackgroundTasks
 from src.api.v1.schemas.feedback import FeedbackIdentified
-from src.api.v1.schemas.email_request import EmailRequest
 from src.services.feedbacks import FeedbacksService
 from src.services.email import EmailService
 
@@ -32,7 +31,6 @@ async def create_feedback_route(
         email_service: Annotated[EmailService, Depends(email_service_dependency)]
 ):
     result = await feedbacks_service.add_feedback(data)
-    print(result)
     if result:
         background_tasks.add_task(
             email_service.send_email,

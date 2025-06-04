@@ -34,5 +34,5 @@ async def add_sailor_create_request_route(
     if result:
         background_tasks.add_task(
             email_service.send_email,
-            email_service.create_email_request_on_sailor_add_request_submit(result.user_email, result.user_fullname))
+            email_service.create_email_request_on_sailor_add_request_submit(submitted_data=result))
     return result

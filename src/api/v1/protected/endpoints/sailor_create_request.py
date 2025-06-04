@@ -56,7 +56,12 @@ async def approve_sailor_create_request(
         result = await sailors_service.add_sailor(SailorFullData(**dict(new_sailor_data)))
         background_tasks.add_task(
             email_service.send_email,
-            email_service.create_email_request_on_sailor_request_approve(status_update_result.user_email, status_update_result.user_fullname))
+            email_service.create_email_request_on_sailor_request_approve(
+                status_update_result.user_email,
+                status_update_result.user_fullname,
+                sailor_fullname=result.name + " " + result.surname + " " + result.patronymic,
+                biography_id=result.id)
+        )
         return result
 
 

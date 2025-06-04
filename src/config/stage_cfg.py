@@ -1,7 +1,11 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
+
 
 load_dotenv()
+
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 
 DB_HOST = os.getenv('DB_HOST_STAGE')
 DB_PORT = os.getenv('DB_PORT_STAGE')

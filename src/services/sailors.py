@@ -11,7 +11,7 @@ class SailorService:
     async def get_sailors(self, limit: int, offset: int) -> List[SailorShortDataIdentified]:
         return await self.sailors_repo.get_sailors_card_info(limit=limit, offset=offset)
 
-    async def get_sailor(self, sailor_id: UUID) -> SailorFullData:
+    async def get_sailor_biography(self, sailor_id: UUID) -> SailorFullData:
         return await self.sailors_repo.get_by_id(item_id=sailor_id)
 
     async def add_sailor(self, sailor: SailorFullData) -> SailorFullDataIdentified:

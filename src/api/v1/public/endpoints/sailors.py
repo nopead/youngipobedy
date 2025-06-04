@@ -31,10 +31,10 @@ async def get_sailors(
 @limiter.limit("100/minute")
 @cache(expire=60 * 5)
 @router.get("/biography/{sailor_id}", response_model=SailorFullData)
-async def get_sailor_by_id(
+async def get_sailor_biography(
         request: Request,
         sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         sailor_id: UUID,
 ):
-    return await sailors_service.get_sailor(sailor_id)
+    return await sailors_service.get_sailor_biography(sailor_id)
 

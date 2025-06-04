@@ -1,9 +1,11 @@
 from src.api.v1.schemas.base import MyBaseModel
 from pydantic import EmailStr
+from uuid import UUID
 
 
 class EmailRequest(MyBaseModel):
     receiver_email: EmailStr
-    receiver_fullname: str
+    context: dict
     subject: str
     template: str
+
