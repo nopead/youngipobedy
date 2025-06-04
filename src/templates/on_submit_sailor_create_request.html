@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Заявка на добавление юнги успешно создана!{% endblock %}
+
+{% block content %}
+    <h1 class="greeting">Здравствуйте, {% if user_fullname %}{{ user_fullname }}{% else %}Уважаемый пользователь{% endif %}!</h1>
+    <div class="message">
+        <p>Это обратное письмо на создание заявки на добавление данных об юнге.</p>
+        <p>Благодарим вас за предоставление исторических данных для нашего ресурса!</p>
+        <p><b>Дата подачи заявки:</b> {% if created_at %}{{ created_at }}{% else %}Нет данных{% endif %}</p>
+        <p>Данные о юнге, которые вы оставили в заявке:</p>
+        <p><b>Фотография</b></p>
+         <img src="{{ photo_url }}" alt="Фото юнги", style="width: 400px">
+        <p><b>Имя:</b> {% if name %}{{ name }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Фамилия:</b> {% if surname %}{{ surname }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Отчество:</b> {% if patronymic %}{{ patronymic }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Дата рождения:</b> {% if birth_date %}{{ birth_date }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Дата смерти:</b> {% if death_date %}{{ death_date }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Номер набора:</b> {% if admission %}{{ admission }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Биография:</b> {% if biography %}{{ biography }}{% else %}Нет данных{% endif %}</p>
+        <p><b>Дополнительная информация:</b> {% if additional_information %}{{ additional_information }}{% else %}Нет данных{% endif %}</p>
+        <p class="support-note">Если возникнут вопросы, можете связаться с нами через список контактов внизу письма</p>
+    </div>
+{% endblock %}
