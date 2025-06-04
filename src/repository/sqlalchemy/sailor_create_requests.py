@@ -1,25 +1,63 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.api.v1.schemas.sailor_create_request import SailorCreateRequest as SCRSchema
-from src.models.sailors_create_requests import SailorCreateRequest as SCRModel
+from src.models.sailors_create_requests import SailorCreateRequest
+from src.repository.sqlalchemy.base import SQLAlchemyRepository
+from src.database.database import async_session_maker
+from src.models.sailors_create_requests import RequestStatus
+from sqlalchemy import select
 from fastapi import HTTPException
+from uuid import UUID
 
 
-async def add_sailor_create_request(
-        data: SCRSchema,
-        session: AsyncSession
-):
-    try:
-        request = SCRModel(**data.model_dump())
+class SailorsCreateRequestsRepository(SQLAlchemyRepository):
+    model = SailorCreateRequest
 
-        session.add(request)
-        await session.commit()
-        await session.refresh(request)
+    async def get_sailors_data(self, request_id: UUID):
+        async with async_session_maker() as session:
+            try:
+                result = await session.execute(
+                    select(
+                        self.model.name,
+                        self.model.surname,
+                        self.model.patronymic,
+                        self.model.birth_date,
+                        self.model.death_date,
+                        self.model.admission,
+                        self.model.photo_url,
+                        self.model.biography
+                    ).filter(self.model.id == request_id)
+                )
+                return result.mappings().first()
+            except Exception as e:
+                await session.rollback()
+                raise HTTPException(status_code=500, detail=f"Ошибка при чтении данных: {str(e)}")
 
-        return request
+    async def approve_request(self, request_id: UUID):
+        return await self._update_request_status(request_id, RequestStatus.APPROVED)
 
-    except Exception as e:
-        await session.rollback()
-        raise HTTPException(
-            status_code=500,
-            detail=f"Ошибка при создании заявки на добавление моряка: {str(e)}"
-        )
+
+    async def reject_request(self, request_id: UUID):
+        return await self._update_request_status(request_id, RequestStatus.REJECTED)
+
+    async def _update_request_status(self, request_id: UUID, new_status: RequestStatus):
+        async with async_session_maker() as session:
+            try:
+                result = await session.execute(
+                    select(self.model).where(self.model.id == request_id)
+                )
+                request = result.scalars().first()
+
+                if not request:
+                    raise HTTPException(status_code=404, detail=f"Заявка с ID {request_id} не найдена")
+
+                if request.status == RequestStatus.PENDING:
+                    request.status = new_status
+                    session.add(request)
+                    await session.commit()
+                    await session.refresh(request)
+
+                    return request
+
+                raise HTTPException(status_code=409, detail="Ошибка при обновлении статуса заявки: невозможно поменять статус")
+
+            except Exception as e:
+                await session.rollback()
+                raise HTTPException(status_code=500, detail=f"Ошибка при обновлении статуса заявки: {str(e)}")

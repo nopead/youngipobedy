@@ -1,10 +1,14 @@
-from fastapi import APIRouter, Request, HTTPException
-
+from fastapi import APIRouter, Request, Depends, BackgroundTasks
 from starlette import status
+from src.api.v1.schemas.sailor_create_request import SailorsCreateRequestSet
 
-from src.api.v1.schemas.sailor_create_request import SailorCreateRequest
+from src.services.sailor_create_requests import SailorsCreateRequestsService
+from src.services.email import EmailService
 
-from src.repository.sqlalchemy.sailor_create_requests import add_sailor_create_request
+from src.api.v1.dependencies import sailor_create_requests_service_dependency
+from src.api.v1.dependencies import email_service_dependency
+
+from typing import Annotated
 
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -21,14 +25,14 @@ router = APIRouter(
 @router.post("/add", status_code=status.HTTP_201_CREATED)
 async def add_sailor_create_request_route(
         request: Request,
-        data: SailorCreateRequest,
+        data: SailorsCreateRequestSet,
+        background_tasks: BackgroundTasks,
+        sailors_create_requests_service: Annotated[SailorsCreateRequestsService, Depends(sailor_create_requests_service_dependency)],
+        email_service: Annotated[EmailService, Depends(email_service_dependency)]
 ):
-    try:
-        ...
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error"
-        )
+    result = await sailors_create_requests_service.add_request(data)
+    if result:
+        background_tasks.add_task(
+            email_service.send_email,
+            email_service.create_email_request_on_sailor_add_request_submit(result.user_email, result.user_fullname))
+    return result

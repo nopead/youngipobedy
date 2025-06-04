@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добро пожаловать!</title>
+</head>
+<body>
+    <h1>Здравствуйте, {% if full_name %}{{ full_name }}{% else %}Уважаемый пользователь{% endif %}!</h1>
+
+    <p>Добро пожаловать в наш сервис. Ваш email: <strong>{{ email }}</strong></p>
+
+    {% if promo_code %}
+    <p>Ваш промокод для скидки: <code>{{ promo_code }}</code></p>
+    {% endif %}
+
+    <footer>
+        <p>С уважением,<br>Команда {{ service_name }}</p>
+    </footer>
+</body>
+</html>
