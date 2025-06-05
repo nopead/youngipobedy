@@ -1,6 +1,6 @@
 import os
 import uuid
-from fastapi import UploadFile
+from fastapi import UploadFile, HTTPException
 from src.config.stage_cfg import PROJECT_ROOT
 
 
@@ -26,3 +26,19 @@ class FileService:
             buffer.write(file.file.read())
 
         return unique_filename
+
+    async def delete(self, filename: str) -> bool:
+        try:
+            file_path = PROJECT_ROOT + self.RESOURCES_DIRECTORY + filename
+
+            if not file_path.exists():
+                return False
+
+            file_path.unlink()
+            return True
+
+        except OSError as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to delete file: {str(e)}"
+            )

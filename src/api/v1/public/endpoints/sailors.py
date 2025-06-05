@@ -29,7 +29,12 @@ async def get_sailors(
         search: Optional[str] = Query(None, description="Поиск по ФИО"),
         filters: Optional[str] = Query(None, description="Фильтры в формате JSON.", example="{'поле': ['значение'], 'поле': значение}",)
 ):
-    return await sailors_service.get_sailors(limit, offset, filters, order_by, search)
+    return await sailors_service.get_sailors(
+        limit=limit,
+        offset=offset,
+        filters=filters,
+        order_by=order_by,
+        search=search)
 
 
 @limiter.limit("100/minute")
