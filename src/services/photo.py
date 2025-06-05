@@ -1,6 +1,9 @@
+import imghdr
+from fastapi import UploadFile, HTTPException
 from src.services.files import FileService
 from src.config.stage_cfg import PROJECT_ROOT
 import base64
+import os
 
 
 def create_base64_image_source(photo_url):
@@ -21,4 +24,48 @@ def create_base64_image_source(photo_url):
 
 
 class PhotoService(FileService):
-    resource_directory = "resources/photos/"
+    RESOURCES_DIRECTORY = "resources/photos/"
+    VALIDATION_RULES = {
+        ".png": {
+            "mimes": {"image/png"},
+            "format": "png"
+        },
+        ".jpg": {
+            "mimes": {"image/jpeg", "image/jpg"},
+            "format": "jpeg"
+        },
+        ".jpeg": {
+            "mimes": {"image/jpeg", "image/jpg"},
+            "format": "jpeg"
+        },
+        ".webp": {
+            "mimes": {"image/webp"},
+            "format": "webp"
+        }
+    }
+
+    async def validate_content(self, file: UploadFile):
+        file_extension = os.path.splitext(file.filename)[1].lower()
+
+        if file_extension not in self.VALIDATION_RULES:
+            allowed = ", ".join(self.VALIDATION_RULES.keys())
+            raise HTTPException(400, f"Invalid file extension. Allowed: {allowed}")
+
+        rules = self.VALIDATION_RULES[file_extension]
+
+        if file.content_type not in rules["mimes"]:
+            allowed_mimes = ", ".join(rules["mimes"])
+            raise HTTPException(400,
+                                f"Invalid MIME type for {file_extension}. Allowed: {allowed_mimes}")
+
+        file.file.seek(0)
+        file_signature = file.file.read(32)
+        file.file.seek(0)
+
+        detected_format = imghdr.what(None, h=file_signature)
+        if not detected_format:
+            raise HTTPException(400, "Invalid image content")
+
+        if detected_format != rules["format"]:
+            raise HTTPException(400,
+                                f"File content is {detected_format}, expected {rules['format']}")

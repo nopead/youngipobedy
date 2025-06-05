@@ -15,7 +15,8 @@ app = FastAPI(
         {"url": "http://127.0.0.1:1111", "description": "Staging environment"},
         {"url": "https://youngi.pobedy.com", "description": "Production environment"},
     ],
-    docs_url="/swagger"
+    docs_url="/swagger",
+    max_upload_size=100 * 1024 * 5
 )
 
 

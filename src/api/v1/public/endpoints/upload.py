@@ -16,7 +16,7 @@ async def upload_image(
         raise HTTPException(status_code=400, detail="Only image files are allowed")
 
     try:
-        filename = await photo_service.save_photo(file)
+        filename = await photo_service.save(file)
         return {
             "message": "File uploaded successfully",
             "filename": filename,

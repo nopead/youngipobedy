@@ -5,20 +5,23 @@ from src.config.stage_cfg import PROJECT_ROOT
 
 
 class FileService:
-    resource_directory = None
+    RESOURCES_DIRECTORY = None
+    VALIDATION_RULES = None
 
-    @classmethod
-    async def _ensure_directory_exists(cls):
-        os.makedirs(PROJECT_ROOT / cls.resource_directory, exist_ok=True)
+    async def validate_content(self, file: UploadFile):
+        ...
 
-    @classmethod
-    async def save_photo(cls, file: UploadFile) -> str:
-        await cls._ensure_directory_exists()
+    async def _ensure_directory_exists(self):
+        os.makedirs(PROJECT_ROOT / self.RESOURCES_DIRECTORY, exist_ok=True)
+
+    async def save(self, file: UploadFile) -> str:
+        await self.validate_content(file)
+        await self._ensure_directory_exists()
 
         file_extension = os.path.splitext(file.filename)[1]
         unique_filename = f"{uuid.uuid4()}{file_extension}"
 
-        file_path = os.path.join(PROJECT_ROOT / cls.resource_directory, unique_filename)
+        file_path = os.path.join(PROJECT_ROOT / self.RESOURCES_DIRECTORY, unique_filename)
         with open(file_path, "wb") as buffer:
             buffer.write(file.file.read())
 
