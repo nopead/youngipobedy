@@ -10,29 +10,8 @@ from uuid import UUID
 class SailorsCreateRequestsRepository(SQLAlchemyRepository):
     model = SailorCreateRequest
 
-    async def get_sailors_data(self, request_id: UUID):
-        async with async_session_maker() as session:
-            try:
-                result = await session.execute(
-                    select(
-                        self.model.name,
-                        self.model.surname,
-                        self.model.patronymic,
-                        self.model.birth_date,
-                        self.model.death_date,
-                        self.model.admission,
-                        self.model.photo_url,
-                        self.model.biography
-                    ).filter(self.model.id == request_id)
-                )
-                return result.mappings().first()
-            except Exception as e:
-                await session.rollback()
-                raise HTTPException(status_code=500, detail=f"Ошибка при чтении данных: {str(e)}")
-
     async def approve_request(self, request_id: UUID):
         return await self._update_request_status(request_id, RequestStatus.APPROVED)
-
 
     async def reject_request(self, request_id: UUID):
         return await self._update_request_status(request_id, RequestStatus.REJECTED)

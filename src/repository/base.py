@@ -13,7 +13,13 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get(self, limit: int, offset: int):
+    async def get(self,
+                  limit: int,
+                  offset: int,
+                  filters: dict | None,
+                  order_by: list[str] | None,
+                  search: str | None
+                  ):
         raise NotImplementedError
 
     @abstractmethod

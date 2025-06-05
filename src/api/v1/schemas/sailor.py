@@ -4,14 +4,11 @@ from uuid import UUID
 from src.api.v1.schemas.base import MyBaseModel
 
 
-class SailorShortData(MyBaseModel):
+class SailorData(MyBaseModel):
     name: str = Field(..., max_length=30, description="Имя моряка")
     surname: str = Field(..., max_length=30, description="Фамилия моряка")
     patronymic: str = Field(..., max_length=30, description="Отчество моряка")
     photo_url: str | None = Field(None, max_length=500, description="URL главного фото")
-
-
-class SailorFullData(SailorShortData):
     birth_date: date = Field(None, description="Дата рождения")
     death_date: date | None = Field(None, description="Дата смерти")
     admission: int = Field(..., ge=1, le=3, description="Номер набора в школу")
@@ -30,9 +27,6 @@ class SailorFullData(SailorShortData):
         return self
 
 
-class SailorShortDataIdentified(SailorShortData):
+class SailorDataIdentified(SailorData):
     id: UUID
 
-
-class SailorFullDataIdentified(SailorFullData):
-    id: UUID

@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends
 from src.api.v1.dependencies import admin_dependency
 from uuid import UUID
-from src.api.v1.schemas.sailor import SailorFullData, SailorFullDataIdentified
+from src.api.v1.schemas.sailor import SailorData, SailorDataIdentified
 from src.api.v1.dependencies import sailor_service_dependency
 from src.services.sailors import SailorService
 from typing import Annotated
+
 
 
 router = APIRouter(
@@ -13,9 +14,9 @@ router = APIRouter(
 )
 
 
-@router.post("/create", response_model=SailorFullDataIdentified)
+@router.post("/create", response_model=SailorDataIdentified)
 async def create_sailor(
-        data: SailorFullData,
+        data: SailorData,
         sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         auth: admin_dependency,
 ):

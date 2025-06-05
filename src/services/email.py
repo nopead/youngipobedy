@@ -134,5 +134,5 @@ class EmailService:
                 "sailor_fullname": sailor_fullname
             },
             subject="К сожалению заявка на добавление юнги не прошла проверку!",
-            template="welcome"
+            template="on_reject_sailor_create_request"
         )

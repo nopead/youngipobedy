@@ -1,22 +1,25 @@
 from src.repository.base import AbstractRepository
 from src.api.v1.schemas.sailor_create_request import SailorsCreateRequestSet, SailorsCreateRequestGet
-
-from typing import List, Annotated
-
-from fastapi import Depends
+from typing import List, Optional
 from uuid import UUID
+from src.services.core import parse_filters
 
 
 class SailorsCreateRequestsService:
     def __init__(self, sailors_create_requests_repo: AbstractRepository):
         self.sailors_create_requests_repo: AbstractRepository = sailors_create_requests_repo()
 
-    async def get_requests(self, limit: int, offset: int) -> List[SailorsCreateRequestGet]:
-        return await self.sailors_create_requests_repo.get(limit=limit, offset=offset)
+    async def get_requests(self,
+                           limit: int,
+                           offset: int,
+                           order_by: Optional[List[str]],
+                           search: Optional[str],
+                           filters: Optional[str]
+                           ) -> List[SailorsCreateRequestGet]:
+        return await self.sailors_create_requests_repo.get(limit, offset, order_by, search, filters=parse_filters(filters))
 
     async def add_request(self, request: SailorsCreateRequestSet) -> SailorsCreateRequestGet:
-        data = request.model_dump()
-        result = await self.sailors_create_requests_repo.add(data)
+        result = await self.sailors_create_requests_repo.add(data=request.model_dump())
         return SailorsCreateRequestGet.model_validate(result)
 
     async def delete_request(self, request_id: UUID):
