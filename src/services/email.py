@@ -5,23 +5,7 @@ from email.message import EmailMessage
 from jinja2 import Environment, FileSystemLoader
 from src.config.stage_cfg import SMTPConfig, PROJECT_ROOT
 from src.api.v1.schemas.email_request import EmailRequest
-
-
-def create_base64_image_source(photo_url):
-    photo_path = PROJECT_ROOT / photo_url.lstrip('/')
-
-    print(photo_path)
-
-    if photo_path.exists():
-        print("path_exists")
-        photo_data = photo_path.read_bytes()
-        photo_base64 = base64.b64encode(photo_data).decode('utf-8')
-        photo_extension = photo_path.suffix.lstrip('.').lower()
-    else:
-        photo_base64 = None
-        photo_extension = None
-
-    return f"data:image/{photo_extension};base64,{photo_base64}"
+from src.services.photo import create_base64_image_source
 
 
 class EmailService:
