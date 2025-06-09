@@ -1,6 +1,5 @@
 from src.api.v1.schemas.base import MyBaseModel
 from pydantic import EmailStr
-from uuid import UUID
 
 
 class EmailRequest(MyBaseModel):
@@ -8,4 +7,6 @@ class EmailRequest(MyBaseModel):
     context: dict
     subject: str
     template: str
+
+
 

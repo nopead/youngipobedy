@@ -13,3 +13,8 @@ class SailorsCreateRequestSet(SailorData):
 class SailorsCreateRequestGet(SailorsCreateRequestSet):
     id: UUID
     created_at: datetime.datetime
+
+
+
+
+

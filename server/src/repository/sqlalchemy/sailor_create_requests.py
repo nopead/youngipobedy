@@ -9,6 +9,8 @@ from uuid import UUID
 
 class SailorsCreateRequestsRepository(SQLAlchemyRepository):
     model = SailorCreateRequest
+    search_fields = ['name', 'surname', 'patronymic']
+    order_fields = ['created_at']
 
     async def approve_request(self, request_id: UUID):
         return await self._update_request_status(request_id, RequestStatus.APPROVED)

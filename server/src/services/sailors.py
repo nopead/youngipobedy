@@ -25,8 +25,8 @@ class SailorService:
     async def add_sailor(self, sailor: SailorData) -> SailorDataIdentified:
         return await self.sailors_repo.add(data=sailor.model_dump())
 
-    async def update_sailor(self, new_data: SailorDataIdentified) -> SailorDataIdentified:
-        return await self.sailors_repo.update(data=new_data.model_dump())
+    async def update_sailor(self, sailor_id: UUID, new_data: SailorData) -> SailorDataIdentified:
+        return await self.sailors_repo.update(sailor_id ,data=new_data.model_dump())
 
     async def delete_sailor(self, sailor_id: UUID):
         return await self.sailors_repo.delete(item_id=sailor_id)

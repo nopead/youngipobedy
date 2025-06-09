@@ -2,18 +2,11 @@ from fastapi import APIRouter, Request, Depends, BackgroundTasks
 from src.api.v1.schemas.feedback import FeedbackIdentified
 from src.services.feedbacks import FeedbacksService
 from src.services.email import EmailService
-
 from src.api.v1.dependencies import email_service_dependency
 from src.api.v1.dependencies import feedback_service_dependency
-
 from src.api.v1.schemas.feedback import Feedback
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 from typing import Annotated
-
-
-limiter = Limiter(key_func=get_remote_address)
-
+from src.config.stage_cfg import limiter
 
 router = APIRouter(
     prefix="/feedbacks",

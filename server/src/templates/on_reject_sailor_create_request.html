@@ -3,7 +3,7 @@
 {% block title %}Заявка на добавление юнги отклонена!{% endblock %}
 
 {% block content %}
-    <h1 class="greeting">Здравствуйте, {% if full_name %}{{ full_name }}{% else %}Уважаемый пользователь{% endif %}!</h1>
+    <h1 class="greeting">Здравствуйте, {% if receiver_fullname %}{{ receiver_fullname }}{% else %}Уважаемый пользователь{% endif %}!</h1>
     <div class="message">
         <p>Сообщаем, что ваша заявка на добавление юнги <b>{{ sailor_fullname }}</b> была отклонена!</p>
         <p class="support-note">Для получения ответов на вопросы воспользуйтесь списком контактов внизу письма</p>

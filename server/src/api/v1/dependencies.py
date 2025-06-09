@@ -10,14 +10,6 @@ from src.repository.sqlalchemy.sailor_create_requests import SailorsCreateReques
 from src.services.email import EmailService
 from src.services.photo import PhotoService
 
-from src.auth.auth import admin_auth
-
-from typing import Annotated
-from fastapi import Depends
-
-
-admin_dependency = Annotated[str, Depends(admin_auth)]
-
 
 def sailor_service_dependency():
     return SailorService(SailorsRepository)
@@ -37,3 +29,5 @@ def email_service_dependency():
 
 def photo_service_dependency():
     return PhotoService()
+
+

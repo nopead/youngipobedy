@@ -3,7 +3,7 @@ from pathlib import Path
 from aiosmtplib import SMTP
 from email.message import EmailMessage
 from jinja2 import Environment, FileSystemLoader
-from src.config.stage_cfg import SMTPConfig, PROJECT_ROOT
+from src.config.stage_cfg import SMTPConfig
 from src.api.v1.schemas.email_request import EmailRequest
 from src.services.photo import create_base64_image_source
 
@@ -21,12 +21,7 @@ class EmailService:
         self,
         request: EmailRequest
     ):
-
-        html_content = self._render_template(
-            template_file=f"{request.template}.html",
-            context=request.context
-        )
-
+        html_content = self._render_template(template_file=f"{request.template}.html", context=request.context)
         if html_content:
             message = EmailMessage()
             message["From"] = SMTPConfig.SMTP_USERNAME
@@ -35,15 +30,8 @@ class EmailService:
             message.add_alternative(html_content, subtype="html")
 
             try:
-                async with SMTP(
-                    hostname=SMTPConfig.SMTP_SERVER_DOMAIN,
-                    port=SMTPConfig.SMTP_SERVER_PORT,
-                    use_tls=True
-                ) as smtp:
-                    await smtp.login(
-                        SMTPConfig.SMTP_USERNAME,
-                        SMTPConfig.SMTP_PASSWORD
-                    )
+                async with SMTP(hostname=SMTPConfig.SMTP_SERVER_DOMAIN, port=SMTPConfig.SMTP_SERVER_PORT, use_tls=True) as smtp:
+                    await smtp.login(SMTPConfig.SMTP_USERNAME, SMTPConfig.SMTP_PASSWORD)
                     await smtp.send_message(message)
                 print(f"Email sent to {request.receiver_email}")
             except Exception as e:
@@ -52,10 +40,7 @@ class EmailService:
         else:
             print("Ошибка отправки письма. Отсутствует html шаблон. Возможно, произошла ошибка его формирования")
 
-    def _render_template(
-        self,
-        template_file: str,
-        context: dict
+    def _render_template(self, template_file: str, context: dict
     ) -> str | None:
         try:
             template = self.template_env.get_template(template_file)

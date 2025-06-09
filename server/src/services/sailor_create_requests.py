@@ -16,7 +16,7 @@ class SailorsCreateRequestsService:
                            search: Optional[str],
                            filters: Optional[str]
                            ) -> List[SailorsCreateRequestGet]:
-        return await self.sailors_create_requests_repo.get(limit, offset, order_by, search, filters=parse_filters(filters))
+        return await self.sailors_create_requests_repo.get(limit=limit, offset=offset, order_by=order_by, search=search, filters=parse_filters(filters))
 
     async def add_request(self, request: SailorsCreateRequestSet) -> SailorsCreateRequestGet:
         result = await self.sailors_create_requests_repo.add(data=request.model_dump())

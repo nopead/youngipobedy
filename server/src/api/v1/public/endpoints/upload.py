@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from typing import Annotated
-from starlette import status
 from src.services.photo import PhotoService
 from src.api.v1.dependencies import photo_service_dependency
-
+from src.config.stage_cfg import limiter
 router = APIRouter(prefix="/upload", tags=["upload"])
 
 
@@ -19,7 +18,7 @@ async def upload_image(
         filename = await photo_service.save(file)
         return {
             "message": "File uploaded successfully",
-            "filename": filename,
+            "photo_url": filename,
             "content_type": file.content_type
         }
     except Exception as e:

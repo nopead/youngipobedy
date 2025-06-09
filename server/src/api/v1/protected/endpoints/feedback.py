@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, Query
-from src.api.v1.dependencies import admin_dependency, feedback_service_dependency
+from src.api.v1.dependencies import feedback_service_dependency
 from src.services.feedbacks import FeedbacksService
 from typing import Annotated, Optional, List
 from src.api.v1.schemas.feedback import FeedbackIdentified
+from authx import RequestToken
+from src.security.security import security
 
 
 router = APIRouter(
@@ -11,12 +13,12 @@ router = APIRouter(
 )
 
 
-@router.get("/show", response_model=list[FeedbackIdentified])
+@router.get("/", response_model=list[FeedbackIdentified])
 async def show_feedbacks(
-        auth: admin_dependency,
         feedbacks_service: Annotated[FeedbacksService, Depends(feedback_service_dependency)],
         offset: int = 0,
-        limit: int = 20,
+        limit: int = 100,
+        token: RequestToken = Depends(security.get_access_token_from_request),
         order_by: Optional[List[str]] = Query(None, description="Сортировка: -field для DESC", example="['last_name', '-school_number']"),
         search: Optional[str] = Query(None, description="Фраза для поиска"),
         filters: Optional[str] = Query(None, description="Фильтры в формате JSON.", example='{"поле": ["значение", "значение"], "поле": значение}')
@@ -33,6 +35,6 @@ async def show_feedbacks(
 async def delete_feedback(
         feedback_id: int,
         feedbacks_service: Annotated[FeedbacksService, Depends(feedback_service_dependency)],
-        auth: admin_dependency
+        token: RequestToken = Depends(security.get_access_token_from_request),
 ):
     return await feedbacks_service.delete_feedback(feedback_id)

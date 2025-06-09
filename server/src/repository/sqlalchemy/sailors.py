@@ -7,4 +7,4 @@ from fastapi import HTTPException
 
 class SailorsRepository(SQLAlchemyRepository):
     model = SailorModel
-
+    search_fields = ['name', 'surname', 'patronymic']

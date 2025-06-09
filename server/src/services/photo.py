@@ -1,18 +1,14 @@
 import imghdr
 from fastapi import UploadFile, HTTPException
 from src.services.files import FileService
-from src.config.stage_cfg import PROJECT_ROOT
 import base64
+from pathlib import Path
 import os
 
 
-def create_base64_image_source(photo_url):
-    photo_path = PROJECT_ROOT / photo_url.lstrip('/')
-
-    print(photo_path)
-
+def create_base64_image_source(photo_path):
+    photo_path = Path(photo_path)
     if photo_path.exists():
-        print("path_exists")
         photo_data = photo_path.read_bytes()
         photo_base64 = base64.b64encode(photo_data).decode('utf-8')
         photo_extension = photo_path.suffix.lstrip('.').lower()
@@ -24,7 +20,7 @@ def create_base64_image_source(photo_url):
 
 
 class PhotoService(FileService):
-    RESOURCES_DIRECTORY = "resources/photos/"
+    RESOURCES_DIRECTORY = "photos/"
     VALIDATION_RULES = {
         ".png": {
             "mimes": {"image/png"},

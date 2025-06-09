@@ -13,13 +13,7 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get(self,
-                  limit: int,
-                  offset: int,
-                  filters: dict | None,
-                  order_by: list[str] | None,
-                  search: str | None
-                  ):
+    async def get(self, limit: int, offset: int, filters: dict | None, order_by: list[str] | None, search: str | None):
         raise NotImplementedError
 
     @abstractmethod
@@ -27,7 +21,7 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def update(self, data: dict):
+    async def update(self, item_id: int | UUID, data: dict):
         raise NotImplementedError
 
     @abstractmethod

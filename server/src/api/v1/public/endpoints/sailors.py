@@ -2,14 +2,10 @@ from fastapi import APIRouter, Request, Depends, Query
 from fastapi_cache.decorator import cache
 from src.api.v1.dependencies import sailor_service_dependency
 from uuid import UUID
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 from src.services.sailors import SailorService
 from typing import Annotated, List, Optional
 from src.api.v1.schemas.sailor import SailorData, SailorDataIdentified
-
-
-limiter = Limiter(key_func=get_remote_address)
+from src.config.stage_cfg import limiter
 
 router = APIRouter(
     prefix="/sailors",
@@ -17,8 +13,6 @@ router = APIRouter(
 )
 
 
-@limiter.limit("100/minute")
-@cache(expire=60 * 30)
 @router.get("/", response_model=List[SailorDataIdentified])
 async def get_sailors(
         request: Request,
@@ -37,10 +31,10 @@ async def get_sailors(
         search=search)
 
 
-@limiter.limit("100/minute")
 @cache(expire=60 * 5)
-@router.get("/biography/{sailor_id}", response_model=SailorData)
-async def get_sailor_biography(
+@limiter.limit("5/minute")
+@router.get("/{sailor_id}", response_model=SailorData)
+async def get_sailor(
         request: Request,
         sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         sailor_id: UUID,

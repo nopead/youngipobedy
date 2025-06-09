@@ -15,7 +15,7 @@ class FeedbacksService:
                             search: Optional[str],
                             filters: Optional[str]
                             ) -> List[FeedbackIdentified]:
-        return await self.feedback_repo.get(limit, offset, order_by, search, filters=parse_filters(filters))
+        return await self.feedback_repo.get(limit=limit, offset=offset, order_by=order_by, search=search, filters=parse_filters(filters))
 
     async def add_feedback(self, feedback: Feedback) -> FeedbackIdentified:
         data = feedback.model_dump()
@@ -24,3 +24,8 @@ class FeedbacksService:
 
     async def delete_feedback(self, feedback_id: int):
         return await self.feedback_repo.delete(feedback_id)
+
+
+
+
+
