@@ -1,9 +1,7 @@
-import base64
-from pathlib import Path
 from aiosmtplib import SMTP
 from email.message import EmailMessage
 from jinja2 import Environment, FileSystemLoader
-from src.config.stage_cfg import SMTPConfig
+from src.config.stage_cfg import SMTP_USERNAME, SMTP_PASSWORD, SMTP_SERVER_PORT, SMTP_SERVER_DOMAIN
 from src.api.v1.schemas.email_request import EmailRequest
 from src.services.photo import create_base64_image_source
 
@@ -17,21 +15,18 @@ class EmailService:
             lstrip_blocks=True
         )
 
-    async def send_email(
-        self,
-        request: EmailRequest
-    ):
+    async def send_email(self, request: EmailRequest):
         html_content = self._render_template(template_file=f"{request.template}.html", context=request.context)
         if html_content:
             message = EmailMessage()
-            message["From"] = SMTPConfig.SMTP_USERNAME
+            message["From"] = SMTP_USERNAME
             message["To"] = request.receiver_email
             message["Subject"] = request.subject
             message.add_alternative(html_content, subtype="html")
 
             try:
-                async with SMTP(hostname=SMTPConfig.SMTP_SERVER_DOMAIN, port=SMTPConfig.SMTP_SERVER_PORT, use_tls=True) as smtp:
-                    await smtp.login(SMTPConfig.SMTP_USERNAME, SMTPConfig.SMTP_PASSWORD)
+                async with SMTP(hostname=SMTP_SERVER_DOMAIN, port=SMTP_SERVER_PORT, use_tls=True) as smtp:
+                    await smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
                     await smtp.send_message(message)
                 print(f"Email sent to {request.receiver_email}")
             except Exception as e:
@@ -62,16 +57,26 @@ class EmailService:
 
     @staticmethod
     def create_email_request_on_sailor_add_request_submit(submitted_data):
+        birth_day = str(submitted_data.birth_day) if submitted_data.birth_day is not None else "_"
+        birth_month = str(submitted_data.birth_month) if submitted_data.birth_month is not None else "_"
+        birth_year = str(submitted_data.birth_year) if submitted_data.birth_year is not None else "_"
+        birth_date = f"{birth_day}.{birth_month}.{birth_year}"
+
+        death_day = str(submitted_data.death_day) if submitted_data.death_day is not None else "_"
+        death_month = str(submitted_data.death_month) if submitted_data.death_month is not None else "_"
+        death_year = str(submitted_data.death_year) if submitted_data.death_year is not None else "_"
+        death_date = f"{death_day}.{death_month}.{death_year}"
         return EmailRequest(
             receiver_email=submitted_data.user_email,
             context={
                 "created_at": submitted_data.created_at.strftime('%d/%m/%Y %H:%M:%S'),
+                "request_id": submitted_data.id,
                 "receiver_fullname": submitted_data.user_fullname,
                 "name": submitted_data.name,
                 "surname": submitted_data.surname,
                 "patronymic": submitted_data.patronymic,
-                "birth_date": submitted_data.birth_date,
-                "death_date": submitted_data.death_date,
+                "birth_date": birth_date,
+                "death_date": death_date,
                 "photo_url": create_base64_image_source(submitted_data.photo_url),
                 "admission": submitted_data.admission,
                 "biography": submitted_data.biography,

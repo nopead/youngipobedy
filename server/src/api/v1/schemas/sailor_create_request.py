@@ -7,7 +7,7 @@ import datetime
 class SailorsCreateRequestSet(SailorData):
     user_fullname: str = Field(max_length=100)
     user_email: EmailStr = Field(max_length=255)
-    additional_information: str = Field(max_length=500)
+    additional_information: str | None = Field(max_length=500)
 
 
 class SailorsCreateRequestGet(SailorsCreateRequestSet):

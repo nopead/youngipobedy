@@ -29,7 +29,6 @@ class FileService:
             file_path.unlink()
             return True
         except OSError as e:
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to delete file: {str(e)}"
-            )
+            raise HTTPException(status_code=500, detail=f"Failed to delete file: {str(e)}")
+
+

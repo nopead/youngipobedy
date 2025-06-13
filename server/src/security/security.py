@@ -1,6 +1,10 @@
 from authx import AuthXConfig, AuthX
 from src.config.stage_cfg import JWT_SECRET_KEY
 
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+
 auth_config = AuthXConfig(
     JWT_SECRET_KEY=JWT_SECRET_KEY,
     JWT_ALGORITHM="HS256",
@@ -15,6 +19,6 @@ auth_config = AuthXConfig(
 
 security = AuthX(config=auth_config)
 
-
+limiter = Limiter(key_func=get_remote_address, strategy="fixed-window")
 
 
