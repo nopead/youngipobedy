@@ -1,0 +1,247 @@
+.site-header,
+.admin-header {
+  background-color: #0f2e89;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* По умолчанию центрируем */
+}
+
+/* Контейнеры */
+.site-header__container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Логотип слева, меню справа */
+}
+
+.admin-header__container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Навигация по центру */
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+/* Логотип (только в обычном хедере) */
+.site-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+
+  &__icon {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+    color: #fff;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+
+    span {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    small {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+/* Навигация (десктоп) */
+.site-nav {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-grow: 1;
+  position: relative;
+  top: 0;
+  left: 0;
+  transform: none;
+
+  &__link {
+    color: #fff;
+    font-weight: 400;
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+
+    &:hover {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &.active {
+      font-weight: 700;
+      color: #fff !important;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after,
+    &.active::after {
+      width: 100%;
+    }
+  }
+}
+
+/* Ссылка "Выйти" - кнопка */
+.logout-link {
+  color: #fff !important;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.logout-link:hover {
+  color: #fff;
+  font-weight: 600;
+}
+
+.logout-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.logout-link:hover::after {
+  width: 100%;
+}
+
+/* Бургер */
+.site-burger {
+  width: 30px;
+  cursor: pointer;
+  display: none; /* скрываем по умолчанию */
+  flex-direction: column;
+  justify-content: space-around;
+  height: 22px;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+
+  &__line {
+    width: 100%;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+
+    &.open:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    &.open:nth-child(2) {
+      opacity: 0;
+    }
+    &.open:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+}
+
+/* Мобильное меню (выезжающий блок с вертикальным списком) */
+.site-mobile-menu {
+  display: none;
+  flex-direction: column;
+  background-color: #0f2e89;
+  padding: 1rem 0;
+  position: fixed; /* фиксируем на всю ширину экрана */
+  top: 60px; /* под хедером */
+  left: 0;
+  right: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 150;
+
+  &--open {
+    display: flex;
+    align-items: center; /* центрируем по горизонтали */
+  }
+
+  .site-nav__link,
+  .logout-link {
+    color: #fff;
+    font-weight: 400;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease, font-weight 0.3s ease;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font: inherit;
+  }
+
+  .site-nav__link:hover,
+  .logout-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+  }
+
+  .site-nav__link.active {
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  .site-logo {
+    margin: 0 auto;
+  }
+
+  .site-header__container {
+    justify-content: space-between; /* возвращаем для обычного хедера */
+  }
+
+  .admin-header__container {
+    justify-content: center;
+  }
+
+  .site-nav {
+    display: none !important;
+  }
+
+  .site-burger {
+    display: flex !important;
+  }
+}
