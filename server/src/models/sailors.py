@@ -22,7 +22,7 @@ class SailorBase(MyDeclarativeBase):
     death_year: Mapped[int] = mapped_column(nullable=True, comment="Год смерти(опционально)")
 
     admission: Mapped[int] = mapped_column(nullable=False, comment="Номер набора в школу")
-    photo_url: Mapped[str] = mapped_column(String(500), nullable=True, comment="Ссылка на фото моряка")
+    photo_url: Mapped[str] = mapped_column(String(500), nullable=False, comment="Ссылка на фото моряка")
     biography: Mapped[str | None] = mapped_column(String(10000), nullable=True, comment="Биография")
 
 

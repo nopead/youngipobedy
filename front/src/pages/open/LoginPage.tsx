@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/CommonForm.scss'
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
+  const TITLE = "Вход";
+  useEffect (() => {
+        document.title = TITLE;
+      }, []);
+
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,6 +18,8 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const from = (location.state as { from?: string })?.from || '/admin/sailors';
+
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

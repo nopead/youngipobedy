@@ -1,4 +1,3 @@
-// src/components/auth/ProtectedRouteAdmin.tsx
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -16,7 +15,6 @@ const ProtectedRouteAdmin: React.FC<ProtectedRouteAdminProps> = ({ children }) =
   }
 
   if (!isAuthenticated) {
-    // Если не авторизован, редиректим на страницу логина, сохраняя путь, чтобы после логина вернуться
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

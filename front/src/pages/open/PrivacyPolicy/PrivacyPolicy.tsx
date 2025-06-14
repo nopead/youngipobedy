@@ -13,8 +13,14 @@ const sections = [
   { id: 'contacts', title: 'Контакты' },
 ];
 
+const TITLE = "Политика конфиденциальности";
+
 const PrivacyPolicy: React.FC = () => {
   const [activeSection, setActiveSection] = useState(sections[0].id);
+
+  useEffect (() => {
+        document.title = TITLE;
+      }, []);
 
   useEffect(() => {
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {

@@ -8,6 +8,7 @@ type Tab = 'pending' | 'approved' | 'rejected';
 const PAGE_LIMIT = 20;
 
 const AdminRequestsPage: React.FC = () => {
+  const TITLE = "Заявки";
   const [requests, setRequests] = useState<SailorRequest[]>([]);
   const [tab, setTab] = useState<Tab>('pending');
   const [search, setSearch] = useState('');
@@ -50,6 +51,10 @@ const AdminRequestsPage: React.FC = () => {
       console.error(err);
     }
   }, [tab, search, admissions, orderAsc, offset, token]);
+
+  useEffect (() => {
+    document.title = TITLE;
+  }, []);
 
   useEffect(() => {
     fetchRequests();

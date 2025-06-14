@@ -8,6 +8,7 @@ import './Feedbacks.scss';
 const LIMIT = 100;
 
 const AdminFeedbackPage: React.FC = () => {
+  const TITLE = "Обратная связь";
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [orderBy, setOrderBy] = useState<'created_at' | '-created_at'>('-created_at');
   const [page, setPage] = useState(0);
@@ -53,6 +54,10 @@ const AdminFeedbackPage: React.FC = () => {
       setLoadingMore(false);
     }
   };
+
+  useEffect (() => {
+    document.title = TITLE;
+  }, []);
 
   useEffect(() => {
     fetchFeedbacks(true);

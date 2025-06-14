@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import SailorAddForm from '../../../components/Forms/SailorAddForm';
 import { FormDataType } from '../../../types/sailor-form-types';
@@ -44,11 +44,17 @@ const postData = async (url: string, options: RequestInit) => {
   return response.json();
 };
 
+const TITLE = "Добавление юнги";
+
 const SailorAddPage: React.FC = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
   const { showToast } = useToast();
   const [loading, setLoading] = React.useState(false);
+
+  useEffect (() => {
+        document.title = TITLE;
+      }, []);
 
   const handleSubmit = async (data: FormDataType) => {
     setLoading(true);

@@ -11,6 +11,6 @@ export interface Sailor {
     death_month: number | null;
     death_year: number | null;
     admission: number;
-    biography: string;
+    biography: string | null;
   }
   

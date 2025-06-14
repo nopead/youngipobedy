@@ -11,7 +11,7 @@ export interface SailorRequest {
     death_month: number | null;
     death_year: number | null;
     admission: number;
-    biography: string;
+    biography: string | null;
     user_fullname: string;
     user_email: string;
     additional_information: string | null;
