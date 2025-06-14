@@ -4,10 +4,19 @@ import './NotFound.scss';
 
 const NotFoundPage: React.FC = () => {
   return (
-    <div className="not-found-page">
-      <h1>404 — Страница не найдена</h1>
-      <p>Кажется, вы зашли не туда.</p>
-      <Link to="/">Вернуться на главную</Link>
+    <div className="not-found-page sea-theme">
+      <div className="not-found-content">
+        <h1>⚓ 404 — Курс потерян</h1>
+        <p>Похоже, вы уплыли за пределы навигационной карты...</p>
+        <Link to="/">Вернуться в порт</Link>
+      </div>
+
+      <div className="ship"></div>
+
+      <div className="ocean">
+        <div className="wave"></div>
+        <div className="wave"></div>
+      </div>
     </div>
   );
 };
