@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import './Layout.scss';
-import AdminHeader from './AdminHeader';
+import AdminHeader from './Headers/AdminHeader';
 
 const LayoutAdmin: React.FC = () => {
   return (

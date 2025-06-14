@@ -16,7 +16,7 @@ const AdminHeader: React.FC = () => {
         localStorage.removeItem('access_token');
         navigate('/');
       },
-      className: 'logout-link site-nav__link', // добавил класс
+      className: 'logout-link site-nav__link',
     },
   ];
 

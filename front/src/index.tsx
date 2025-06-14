@@ -4,17 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
+import './styles/Toast.scss';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <AuthProvider>
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </AuthProvider>
   );
-  {/* <React.StrictMode> /*}
-    
-  {/*</React.StrictMode>*/}
-
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/CommonForm.scss';
+import { useToast } from '../../context/ToastContext'; 
 
 type FormData = {
   fullName: string;
@@ -22,6 +23,8 @@ export default function FeedBackForm() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const messageRef = useRef<HTMLTextAreaElement | null>(null);
   const additionalInfoRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const { showToast } = useToast();
 
   const autoResize = (ref: React.RefObject<HTMLTextAreaElement | null>) => {
     if (ref.current) {
@@ -99,7 +102,7 @@ export default function FeedBackForm() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        alert(`Ошибка сервера: ${errorData.detail || response.statusText}`);
+        showToast(`Ошибка сервера: ${errorData.detail || response.statusText}`, 'error');
         setFormSubmitted(false);
         return;
       }
@@ -107,6 +110,8 @@ export default function FeedBackForm() {
       await response.json();
 
       setFormSubmitted(true);
+      showToast('Спасибо! Ваше сообщение отправлено.', 'success');
+
       setFormData({
         fullName: '',
         email: '',
@@ -118,7 +123,7 @@ export default function FeedBackForm() {
       if (messageRef.current) messageRef.current.style.height = 'auto';
       if (additionalInfoRef.current) additionalInfoRef.current.style.height = 'auto';
     } catch {
-      alert('Ошибка сети или сервера. Попробуйте позже.');
+      showToast('Ошибка сети или сервера. Попробуйте позже.', 'error');
       setFormSubmitted(false);
     }
   };
@@ -216,10 +221,6 @@ export default function FeedBackForm() {
         </p>
 
         <button type="submit">Отправить</button>
-
-        {formSubmitted && (
-          <p className="form-success-message">Спасибо! Ваше сообщение отправлено.</p>
-        )}
       </form>
     </section>
   );

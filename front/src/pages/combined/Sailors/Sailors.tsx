@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './SailorsPage.scss';
-import SailorCard from '../../components/sailors/SailorCard';
-import { useDebouncedQuery } from '../../hooks/useDebouncedQuery';
+import './Sailors.scss';
+import SailorCard from '../../../components/Cards/Sailors/SailorCard';
+import { useDebouncedQuery } from '../../../hooks/useDebouncedQuery';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-
-interface Sailor {
-  id: string;
-  name: string;
-  surname: string;
-  patronymic: string;
-  photo_url: string;
-  birth_day: number | null;
-  birth_month: number | null;
-  birth_year: number | null;
-  death_day: number | null;
-  death_month: number | null;
-  death_year: number | null;
-  admission: number;
-  biography: string;
-}
+import { useAuth } from '../../../context/AuthContext';
+import { Sailor } from '../../../types/sailor';
+import { useToast } from '../../../context/ToastContext';
 
 const containerVariants = {
   hidden: {},
@@ -45,10 +31,13 @@ const SailorsPage = () => {
   const [search, setSearch] = useState('');
   const [admissions, setAdmissions] = useState<number[]>([]);
   const [sailors, setSailors] = useState<Sailor[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState<string | null>(null);
   const query = useDebouncedQuery(search, admissions);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const isAdmin = isAuthenticated && location.pathname.startsWith('/admin');
+  const { showToast } = useToast();
 
   useEffect(() => {
     document.title = title;
@@ -56,6 +45,8 @@ const SailorsPage = () => {
 
   useEffect(() => {
     const fetchSailors = async () => {
+      setLoading(true);
+      setLoadingError(null);
       try {
         const params = new URLSearchParams();
         if (query.search) {
@@ -66,15 +57,37 @@ const SailorsPage = () => {
         }
 
         const response = await fetch(`http://127.0.0.1:1111/sailors/?${params.toString()}`);
+
+        if (!response.ok) {
+          let errorMsg = `Ошибка загрузки юнг. Код ошибки: ${response.status}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.message) {
+              errorMsg = `Ошибка загрузки юнг: ${errorData.message}`;
+            }
+          } catch {}
+          setLoadingError(errorMsg);
+          showToast(errorMsg, 'error');
+          setSailors([]);
+          setLoading(false);
+          return;
+        }
+
         const data = await response.json();
         setSailors(data);
+        setLoading(false);
       } catch (error) {
-        console.error('Ошибка загрузки юнг:', error);
+        const errorMsg =
+          error instanceof Error ? `Ошибка загрузки юнг: ${error.message}` : 'Ошибка загрузки юнг';
+        setLoadingError(errorMsg);
+        setSailors([]);
+        showToast(errorMsg, 'error');
+        setLoading(false);
       }
     };
 
     fetchSailors();
-  }, [query]);
+  }, [query, showToast]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -88,11 +101,14 @@ const SailorsPage = () => {
 
       if (res.ok) {
         setSailors(prev => prev.filter(sailor => sailor.id !== id));
+        showToast('Юнга успешно удалён', 'success');
+      } else if (res.status === 429) {
+        showToast('Слишком много запросов, попробуйте позже', 'info');
       } else {
-        alert('Не удалось удалить юнгу');
+        showToast('Не удалось удалить юнгу', 'error');
       }
     } catch (err) {
-      console.error('Ошибка при удалении:', err);
+      showToast('Ошибка при удалении', 'error');
     }
   };
 
@@ -127,20 +143,26 @@ const SailorsPage = () => {
         </div>
       </div>
 
+      {loading && <p className="loading-text">Загрузка...</p>}
+
+      {loadingError && <p className="error-text">{loadingError}</p>}
+
+      {!loading && !loadingError && sailors.length === 0 && (
+        <p className="no-results-text">По вашему запросу ничего не найдено.</p>
+      )}
+
       <motion.div
         className="sailor-cards-grid"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {sailors.map(sailor => (
-          <motion.div key={sailor.id} variants={cardVariants}>
-            <SailorCard
-              {...sailor}
-              onDelete={isAdmin ? handleDelete : undefined}
-            />
-          </motion.div>
-        ))}
+        {!loading && !loadingError &&
+          sailors.map(sailor => (
+            <motion.div key={sailor.id} variants={cardVariants}>
+              <SailorCard {...sailor} onDelete={isAdmin ? handleDelete : undefined} />
+            </motion.div>
+          ))}
       </motion.div>
     </div>
   );

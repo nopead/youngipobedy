@@ -25,7 +25,6 @@ const HeaderBase: React.FC<HeaderBaseProps> = ({ links, isAdmin = false }) => {
       <div className={isAdmin ? 'admin-header__container' : 'site-header__container'}>
         {!isAdmin && (
           <a href="/" className="site-logo">
-            {/* Логотип для обычного хедера */}
             <span className="site-logo__icon">⚓</span>
             <span className="site-logo__text">
               <span>ЮНГИ ПОБЕДЫ</span>
@@ -34,7 +33,6 @@ const HeaderBase: React.FC<HeaderBaseProps> = ({ links, isAdmin = false }) => {
           </a>
         )}
 
-        {/* Навигация (десктоп) */}
         <nav className="site-nav">
           {links.map(({ to, label, onClick, className }, index) =>
             to ? (
@@ -64,14 +62,12 @@ const HeaderBase: React.FC<HeaderBaseProps> = ({ links, isAdmin = false }) => {
           )}
         </nav>
 
-        {/* Бургер */}
         <div className="site-burger" onClick={toggleMenu} aria-label="Toggle menu">
           <span className={`site-burger__line ${menuOpen ? 'open' : ''}`}></span>
           <span className={`site-burger__line ${menuOpen ? 'open' : ''}`}></span>
           <span className={`site-burger__line ${menuOpen ? 'open' : ''}`}></span>
         </div>
 
-        {/* Мобильное меню */}
         <div className={`site-mobile-menu ${menuOpen ? 'site-mobile-menu--open' : ''}`}>
           {links.map(({ to, label, onClick, className }, index) =>
             to ? (

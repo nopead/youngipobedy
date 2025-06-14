@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import SailorRequestCard, { SailorRequest } from '../../components/requests/RequestCard';
-import './AdminRequestsPage.scss';
+import SailorRequestCard from '../../../components/Cards/SailorCreateRequests/RequestCard';
+import { SailorRequest } from '../../../types/sailor-create-request';
+import './SailorCreateRequests.scss';
 
 type Tab = 'pending' | 'approved' | 'rejected';
 
@@ -161,15 +162,14 @@ const AdminRequestsPage: React.FC = () => {
           <p className="empty-message">Заявки не найдены</p>
         ) : (
           requests.map((req) => (
-            <div key={req.id}>
-              <SailorRequestCard
-                request={req}
-                showButtons={tab === 'pending'}
-                onApprove={() => handleApprove(req.id)}
-                onReject={() => handleReject(req.id)}
-                onDelete={() => handleDelete(req.id)}
-              />
-            </div>
+            <SailorRequestCard
+              key={req.id}
+              request={req}
+              showButtons={tab === 'pending'}
+              onApprove={() => handleApprove(req.id)}
+              onReject={() => handleReject(req.id)}
+              onDelete={() => handleDelete(req.id)}
+            />
           ))
         )}
       </div>

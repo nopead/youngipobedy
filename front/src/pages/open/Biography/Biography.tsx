@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import './BiographyPage.scss';
+import './Biography.scss';
 
 export function getPublicPhotoUrl(fullPath: string): string {
     const publicIndex = fullPath.indexOf('public');

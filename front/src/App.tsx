@@ -2,17 +2,17 @@ import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import LayoutAdmin from './components/layout/LayoutAdmin';
 import ProtectedRouteAdmin from './routes/ProtectedRouteAdmin';
-import AboutPage from './pages/open/AboutPage';
-import PrivacyPolicy from './pages/open/PrivacyPolicy';
-import SailorPage from './pages/open/SailorsPage';
-import BiographyPage from './pages/open/BiographyPage';
-import SailorAddPage from './pages/open/SailorsAddPage';
-import AdminFeedbackPage from './pages/admin/AdminFeedbackPage';
-import SailorEditPage from './pages/admin/SailorEditPage';
-import LoginPage from './pages/open/LoginPage';
+import AboutPage from './pages/open/AboutProject/AboutProject';
+import PrivacyPolicy from './pages/open/PrivacyPolicy/PrivacyPolicy';
+import Sailors from './pages/combined/Sailors/Sailors';
+import Biography from './pages/open/Biography/Biography';
+import SailorCreate from './pages/combined/SailorCreate/SailorCreate'
+import Feedbacks from './pages/admin/Feedbacks/Feedbacks';
+import SailorEdit from './pages/admin/SailorEdit/SailorEdit'
+import Login from './pages/open/LoginPage';
 import { AuthProvider } from './context/AuthContext';
-import AdminRequestsPage from './pages/admin/AdminRequestsPage';
-import NotFoundPage from './pages/open/NotFoundPage';
+import SailorCreateRequests from './pages/admin/SailorCreateRequests/SailorCreateRequests';
+import NotFound from './pages/open/NotFound/NotFound';
 
 function App() {
   return (
@@ -23,10 +23,10 @@ function App() {
             <Route index element={<AboutPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="sailors" element={<SailorPage />} />
-            <Route path="biography/:id" element={<BiographyPage />} />
-            <Route path="add-sailor" element={<SailorAddPage />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route path="sailors" element={<Sailors />} />
+            <Route path="biography/:id" element={<Biography />} />
+            <Route path="add-sailor" element={<SailorCreate />} />
+            <Route path="login" element={<Login />} />
           </Route>
 
           <Route
@@ -38,13 +38,13 @@ function App() {
             }
           >
             <Route index element={<Navigate to="sailors" replace />} />
-            <Route path="add-sailor" element={<SailorAddPage />} />
-            <Route path="feedback" element={<AdminFeedbackPage />} />
-            <Route path="sailors" element={<SailorPage />} />
-            <Route path="/admin/sailors/edit/:id" element={<SailorEditPage />} />
-            <Route path="/admin/requests" element={<AdminRequestsPage />} />
+            <Route path="sailors" element={<Sailors />} />
+            <Route path="add-sailor" element={<SailorCreate />} />
+            <Route path="feedback" element={<Feedbacks />} />
+            <Route path="/admin/sailors/edit/:id" element={<SailorEdit />} />
+            <Route path="/admin/requests" element={<SailorCreateRequests />} />
           </Route>
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

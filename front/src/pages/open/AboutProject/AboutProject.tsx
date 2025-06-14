@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import './AboutPage.scss';
-import FeedBackForm from '../../components/layout/FeedBackForm';
+import './AboutProject.scss';
+import FeedBackForm from '../../../components/Forms/FeedBackForm';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
