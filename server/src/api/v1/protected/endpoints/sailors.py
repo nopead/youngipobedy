@@ -39,4 +39,4 @@ async def update_sailor(
         sailors_service: Annotated[SailorService, Depends(sailor_service_dependency)],
         token: RequestToken = Depends(security.get_access_token_from_request)
 ):
-    return sailors_service.update_sailor(sailor_id, data)
+    return await sailors_service.update_sailor(sailor_id, data)

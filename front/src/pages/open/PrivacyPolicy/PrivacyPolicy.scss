@@ -1,0 +1,158 @@
+.privacy-policy-container {
+    display: flex;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 51, 102, 0.1);
+    font-family: 'Arial', sans-serif;
+    color: #003366;
+    min-height: auto; /* убрали фиксированную высоту */
+    position: relative;
+  }
+  
+  .privacy-nav {
+    background: #ffffff;
+    padding: 20px;
+    width: 220px;
+    color: #003366;
+    position: sticky;
+    top: 80px; // высота Header
+    align-self: flex-start;
+    border-right: 1px solid #e0e0e0;
+    user-select: none;
+  
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+  
+    li {
+      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+  
+    button {
+      background: none;
+      border: none;
+      color: #003366;
+      cursor: pointer;
+      padding: 6px 10px;
+      width: 100%;
+      text-align: left;
+      border-radius: 4px;
+      font: inherit;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  
+      &:hover,
+      &:focus {
+        background-color: #e6f0ff;
+        outline: none;
+      }
+  
+      &[aria-current='true'] {
+        background-color: #003366;
+        color: #ffffff;
+        font-weight: 700;
+        box-shadow: inset 3px 0 0 #00c6ff;
+      }
+    }
+    .privacy-nav a {
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      
+        &:focus,
+        &:active {
+          outline: none;
+          background-color: transparent;
+          box-shadow: none;
+        }
+      }
+  
+    @media (max-width: 720px) {
+      position: static;
+      width: auto;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      border-right: none;
+  
+      ul {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+      }
+  
+      li {
+        margin-bottom: 0;
+        white-space: nowrap;
+      }
+  
+      button {
+        padding: 6px 12px;
+        font-size: 14px;
+  
+        &[aria-current='true'] {
+          box-shadow: none;
+          border-bottom: 2px solid #003366;
+          background-color: transparent;
+          color: #003366;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+  
+  .privacy-content {
+    padding: 30px;
+    flex: 1;
+    margin-left: 10px;
+    /* Убираем скролл и высоту */
+    overflow-y: visible;
+    max-height: none;
+    scroll-behavior: smooth;
+  
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    h2 {
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+  
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+  
+    ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+  
+    li {
+      margin-bottom: 8px;
+    }
+  
+    @media (max-width: 720px) {
+      margin-left: 0;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .privacy-nav {
+      display: none; /* прячем навигацию на мобильных */
+    }
+  
+    .privacy-content {
+      margin-left: 0 !important;
+    }
+  }
+  

@@ -9,12 +9,12 @@ from src.api.v1.dependencies import sailor_service_dependency
 from src.services.email import EmailService
 from src.api.v1.dependencies import email_service_dependency
 
-from src.api.v1.schemas.sailor import SailorData
-from src.api.v1.schemas.sailor_create_request import SailorsCreateRequestSet
+from src.api.v1.schemas.sailor_create_request import SailorsCreateRequestSet, SailorsCreateRequestGet
 from uuid import UUID
 from typing import Annotated, Optional, List
 from authx import RequestToken
 from src.security.security import security
+from fastapi import HTTPException
 
 router = APIRouter(
     prefix="/sailor-create-requests",
@@ -22,7 +22,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", response_model=List[SailorsCreateRequestGet])
 async def show_sailor_create_request(
         sailors_create_requests_service: Annotated[SailorsCreateRequestsService, Depends(sailor_create_requests_service_dependency)],
         offset: int = 0,
@@ -61,7 +61,9 @@ async def approve_sailor_create_request(
     status_update_result = await sailors_create_requests_service.approve_request(request_id)
     if status_update_result:
         new_sailor_data = await sailors_create_requests_service.get_sailor_data_from_request(request_id)
-        new_sailor = await sailors_service.add_sailor(SailorData(**dict(new_sailor_data)))
+        if not new_sailor_data:
+            raise HTTPException(status_code=404, detail="Заявка не найдена")
+        new_sailor = await sailors_service.add_sailor(new_sailor_data)
         background_tasks.add_task(
             email_service.send_email,
             email_service.create_email_request_on_sailor_request_approve(

@@ -1,0 +1,157 @@
+.footer {
+    background: linear-gradient(to right, #003366, #00509e);
+    color: white;
+    padding: 25px;
+    font-size: 14px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: flex-start;
+}
+
+.contacts-social-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+}
+
+.contacts-section,
+.social-section {
+    margin: 0;
+}
+
+.contacts-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.social-link {
+    display: inline-flex;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    width: 32px; 
+    height: 32px;
+}
+
+.social-link:hover {
+    transform: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.social-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 5px;
+}
+
+.partners-section {
+    flex: 1 1 300px;
+    min-width: 280px;
+}
+
+.partners-logos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.partner-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.partner-logo:hover {
+    transform: scale(1.1);
+}
+
+.policy-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.policy-link a {
+    color: #aaddff;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.policy-link a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.signature {
+    margin-top: 20px;
+    font-style: italic;
+    text-align: center;
+    font-size: 14px;
+}
+
+.copyright {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Мобильные стили */
+@media (max-width: 600px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .contacts-social-wrapper,
+    .partners-section {
+        max-width: 100%;
+    }
+
+    .social-link {
+        width: 32px;
+        height: 32px;
+    }
+
+    .social-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .partner-logo {
+        width: 70px;
+        height: 70px;
+    }
+}

@@ -11,6 +11,7 @@ class SQLAlchemyRepository(AbstractRepository):
     model = None
     search_fields = None
     order_fields = None
+    filter_fields = None
 
     @asynccontextmanager
     async def _session_scope(self):
@@ -75,7 +76,7 @@ class SQLAlchemyRepository(AbstractRepository):
 
         return stmt.order_by(*order_clauses)
 
-    async def get(self, limit: int, offset: int, order_by: list[str] | None = None, search: str | None = None, filters: dict | None = None):
+    async def get(self,limit: int,offset: int,order_by: list[str] | None = None,search: str | None = None, filters: dict | None = None):
         async with self._session_scope() as session:
             stmt = select(self.model)
 

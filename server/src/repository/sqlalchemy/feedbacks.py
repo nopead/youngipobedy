@@ -6,3 +6,4 @@ class FeedbacksRepository(SQLAlchemyRepository):
     model = Feedback
     search_fields = ['email', 'full_name']
     order_fields = ['created_at']
+

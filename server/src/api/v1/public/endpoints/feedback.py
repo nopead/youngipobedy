@@ -6,7 +6,7 @@ from src.api.v1.dependencies import email_service_dependency
 from src.api.v1.dependencies import feedback_service_dependency
 from src.api.v1.schemas.feedback import Feedback
 from typing import Annotated
-from src.config.stage_cfg import limiter
+from src.security.security import limiter
 
 router = APIRouter(
     prefix="/feedbacks",
@@ -14,8 +14,8 @@ router = APIRouter(
 )
 
 
-@limiter.limit("5/minute")
 @router.post("/create", response_model=FeedbackIdentified)
+@limiter.limit("500/minute")
 async def create_feedback_route(
         request: Request,
         data: Feedback,
@@ -29,3 +29,8 @@ async def create_feedback_route(
             email_service.send_email,
             email_service.create_email_request_for_feedback_charity(result.email, result.full_name))
     return result
+
+
+
+
+

@@ -1,0 +1,59 @@
+.sailor-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+
+    .search-input {
+      font-size: 18px;
+      padding: 12px;
+      border: none;
+      border-bottom: 2px solid #003366;
+      outline: none;
+      width: 100%;
+      background: transparent;
+      color: #003366;
+
+      &::placeholder {
+        color: #999;
+      }
+
+      &:focus {
+        border-bottom: 2px solid #00509e;
+      }
+    }
+
+    .checkbox-group {
+      display: flex;
+      gap: 20px;
+
+      label {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: #003366;
+        cursor: pointer;
+        position: relative;
+
+        input {
+          margin-right: 8px;
+          accent-color: #00509e;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  .sailor-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
+    gap: 30px;
+    justify-content: center;
+  }
+}

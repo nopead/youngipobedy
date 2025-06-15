@@ -23,12 +23,7 @@ async def show_feedbacks(
         search: Optional[str] = Query(None, description="Фраза для поиска"),
         filters: Optional[str] = Query(None, description="Фильтры в формате JSON.", example='{"поле": ["значение", "значение"], "поле": значение}')
 ):
-    return await feedbacks_service.get_feedbacks(
-        limit=limit,
-        offset=offset,
-        order_by=order_by,
-        search=search,
-        filters=filters)
+    return await feedbacks_service.get_feedbacks(limit=limit, offset=offset, order_by=order_by, search=search, filters=filters)
 
 
 @router.delete("/delete/{feedback_id}", response_model=None)
@@ -38,3 +33,11 @@ async def delete_feedback(
         token: RequestToken = Depends(security.get_access_token_from_request),
 ):
     return await feedbacks_service.delete_feedback(feedback_id)
+
+
+
+
+
+
+
+

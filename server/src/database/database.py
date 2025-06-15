@@ -11,3 +11,8 @@ async def get_session() -> AsyncSession:
             yield session
         finally:
             await session.close()
+
+
+
+
+

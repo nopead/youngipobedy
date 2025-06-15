@@ -7,7 +7,6 @@ from fastapi import HTTPException
 
 
 class AbstractRepository(ABC):
-
     @abstractmethod
     async def get_by_id(self, item_id: int | UUID):
         raise NotImplementedError
