@@ -15,7 +15,7 @@ class RequestStatus(str, Enum):
     REJECTED = "rejected"
 
 
-class SailorCreateRequest(MyDeclarativeBase, SailorBase):
+class SailorCreateRequest(SailorBase):
     __tablename__ = 'sailor_create_requests'
 
     id: Mapped[UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid4, index=True, comment="Идентификатор заявки")
@@ -23,16 +23,7 @@ class SailorCreateRequest(MyDeclarativeBase, SailorBase):
     user_email: Mapped[str] = mapped_column(String(255), nullable=False, comment="Email пользователя")
     additional_information: Mapped[str | None] = mapped_column(String(500), nullable=True, comment="Дополнительные сведения от пользователя, например для связи(телефон, telegram, vk и т.д.)")
     status: Mapped[RequestStatus] = mapped_column(SQLEnum(RequestStatus), default=RequestStatus.PENDING, nullable=False, comment="Статус заявки")
-    created_at: Mapped[datetime.datetime] = mapped_column(
-        nullable=False,
-        server_default=text("timezone('UTC', CURRENT_TIMESTAMP)"),
-        comment="Дата создания заявки")
-
-    updated_at: Mapped[Optional[datetime.datetime]] = mapped_column(
-        onupdate=text("timezone('UTC', CURRENT_TIMESTAMP)"),
-        nullable=True,
-        comment="Дата последнего обновления"
-    )
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable=False, server_default=text("timezone('UTC', CURRENT_TIMESTAMP)"), comment="Дата создания заявки")
 
 
 

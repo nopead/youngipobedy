@@ -1,0 +1,104 @@
+.sailor-card {
+  width: 250px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+  }
+
+  .admin-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+
+    button {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      transition: background-color 0.3s ease;
+
+      &.danger {
+        background-color: rgba(211, 47, 47, 0.8);
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+
+        &.danger {
+          background-color: rgba(183, 28, 28, 0.9);
+        }
+      }
+    }
+  }
+
+  .sailor-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: #fafafa;
+    text-align: center;
+
+    .sailor-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #003366;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sailor-dates {
+      font-size: 16px;
+      font-weight: 400;
+      color: #666666;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sailor-admission {
+      font-size: 14px;
+      font-weight: 500;
+      color: #00509e;
+    }
+  }
+}

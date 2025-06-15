@@ -1,0 +1,256 @@
+.sailor-request-card {
+  width: 250px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  .image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 14px;
+      font-style: italic;
+    }
+  }
+
+  .admin-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+
+    button {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      transition: background-color 0.3s ease;
+
+      &.approve {
+        background-color: rgba(0, 80, 158, 0.85);
+      }
+      &.reject {
+        background-color: rgba(211, 47, 47, 0.85);
+      }
+      &.delete {
+        background-color: rgba(90, 90, 90, 0.8);
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .info {
+    padding: 16px;
+    background-color: #fafafa;
+    font-size: 14px;
+    color: #333;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #003366;
+      margin: 0 0 8px 0;
+    }
+
+    p {
+      margin: 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #555;
+    }
+
+    .sailor-dates,
+    .sailor-admission {
+      font-size: 14px;
+      color: #555;
+    }
+
+    hr {
+      margin: 12px 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+
+    .request-info {
+      font-size: 13px;
+
+      div {
+        margin: 3px 0;
+
+        b {
+          color: #003366;
+        }
+      }
+    }
+  }
+}
+
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px; /* отступы для мобильных, чтобы модалка не прилегала к краям */
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px 32px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  width: 100%; /* чтобы на мобилках занять всю доступную ширину с отступами */
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #003366;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #003366;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.modal-image-wrapper {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 8px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.admin-buttons-modal {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+
+  button {
+    flex-grow: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    &.approve {
+      background-color: #00509e;
+    }
+    &.reject {
+      background-color: #d32f2f;
+    }
+    &.delete {
+      background-color: #5a5a5a;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.modal-info-section {
+  font-size: 15px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+
+  b {
+    color: #003366;
+  }
+}
+
+/* Мобильные стили */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 16px 20px;
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+  }
+
+  .modal-image-wrapper {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 16px;
+  }
+
+  .admin-buttons-modal {
+    flex-direction: column;
+    gap: 12px;
+
+    button {
+      width: 100%;
+      padding: 12px 0;
+      font-size: 16px;
+    }
+  }
+
+  .modal-close-btn {
+    font-size: 24px;
+    top: 8px;
+    right: 12px;
+  }
+}

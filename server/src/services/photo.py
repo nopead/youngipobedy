@@ -20,7 +20,7 @@ def create_base64_image_source(photo_path):
 
 
 class PhotoService(FileService):
-    RESOURCES_DIRECTORY = "photos/"
+    RESOURCES_DIRECTORY = "photos"
     VALIDATION_RULES = {
         ".png": {
             "mimes": {"image/png"},

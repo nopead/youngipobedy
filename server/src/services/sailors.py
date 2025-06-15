@@ -17,7 +17,12 @@ class SailorService:
                           filters: Optional[str]
                           ) -> List[SailorDataIdentified]:
 
-        return await self.sailors_repo.get(limit, offset, order_by, search, parse_filters(filters))
+        return await self.sailors_repo.get(
+            limit=limit,
+            offset=offset,
+            order_by=order_by,
+            search=search,
+            filters=parse_filters(filters))
 
     async def get_sailor_biography(self, sailor_id: UUID) -> SailorData:
         return await self.sailors_repo.get_by_id(item_id=sailor_id)

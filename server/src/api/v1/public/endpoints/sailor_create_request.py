@@ -6,7 +6,7 @@ from src.services.email import EmailService
 from src.api.v1.dependencies import sailor_create_requests_service_dependency
 from src.api.v1.dependencies import email_service_dependency
 from typing import Annotated
-from src.config.stage_cfg import limiter
+from src.security.security import limiter
 
 
 router = APIRouter(
@@ -16,6 +16,7 @@ router = APIRouter(
 
 
 @router.post("/add", status_code=status.HTTP_201_CREATED)
+@limiter.limit("100/minute")
 async def add_sailor_create_request_route(
         request: Request,
         data: SailorsCreateRequestSet,
